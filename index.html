@@ -3,16 +3,101 @@
 @media(max-width:800px){.shell{padding:22px 18px}.top,.section-head{flex-direction:column}.hero,.split{grid-template-columns:1fr}.grid{grid-template-columns:1fr}.metrics{grid-template-columns:repeat(2,1fr)}.tabs{gap:15px}.tab{font-size:13px}.campaign{grid-template-columns:70px 1fr}.hero{padding:22px}h1{letter-spacing:-.5px}.tools{width:100%}.names input{width:150px}}
 @media print{@page{size:A3 landscape;margin:13mm}body{background:white;font-size:11px;color:#172b30;-webkit-print-color-adjust:exact;print-color-adjust:exact}.shell{max-width:none;padding:0}.tools,.tabs,.filters,.no-print,#notice,dialog{display:none!important}section[hidden]{display:block!important}section{break-before:page}section:first-of-type{break-before:auto}.print-title{display:block;font-size:22px;margin-bottom:16px}.card{padding:16px}.hero{padding:20px}.grid{gap:12px}.section-head{margin-top:12px}.table-wrap{overflow:visible}.gantt{min-width:0;table-layout:fixed}.gantt .taskcell{position:static;min-width:0;width:230px}.gantt .day{min-width:0;width:auto}.gantt th,.gantt td{height:29px}.track{height:29px}.bar{top:5px;height:19px;font-size:9px}.task-table{min-width:0;font-size:10px}th,td{padding:7px 9px}.task-table select{appearance:none;border:0;padding:0}.task-table tr{break-inside:avoid}.card,.campaign,.decision,.note,.footer{break-inside:avoid}.task-table small{font-size:9px}.footer{margin-top:16px}.print-only{display:block}.cost-grid input{border:none;padding:0}.names input{border:0;padding:0;font-weight:700}.bar.critical{box-shadow:inset 0 -2px 0 currentColor}}
 @media print{body{zoom:.78}.gantt .taskcell{padding:2px 8px}.gantt .owner-label{display:none}.gantt th,.gantt td{height:25px}.track{height:25px}.bar{top:3px}.section-head h2{font-size:21px}}
-</style></head><body><main class="shell"><header class="top"><div><div class="eyebrow">同好制所　/　PAYATHON 2026</div><h1>三人项目排期</h1><p class="subtitle muted">2026 年 11 月 6 日至 12 月 9 日 · 北京时间</p></div><div><div class="tools"><button class="btn" id="printBtn">打印 / 保存 PDF</button><button class="btn primary" id="saveBtn">下载当前排期副本</button></div><div id="notice" role="status"></div></div></header>
-<nav class="tabs" aria-label="排期视图" role="tablist"><button class="tab" id="tab-schedule" role="tab" aria-selected="true" aria-controls="schedule" data-tab="schedule">甘特图与任务</button><button class="tab" id="tab-meeting" role="tab" aria-selected="false" aria-controls="meeting" data-tab="meeting">节点与分工</button></nav><section id="schedule" role="tabpanel" aria-labelledby="tab-schedule">
-<h2 class="print-title">02 / 甘特图与责任清单</h2>
-<div class="section-head"><div><h2>项目甘特图</h2><p class="muted">条形表示计划占用日期，不代表每天全职投入。点击条形可查看验收条件和依赖。</p></div><div class="filters"><label>负责人 <select id="ownerFilter"><option value="all">全部成员</option><option value="design">产品 / 设计</option><option value="tech">技术</option><option value="growth">用户 / 商业</option></select></label><label><input type="checkbox" id="criticalOnly"> 只看关键任务</label></div></div>
-<div class="legend"><span><i style="background:var(--teal)"></i>产品 / 设计</span><span><i style="background:var(--blue)"></i>技术</span><span><i style="background:var(--orange)"></i>用户 / 商业</span><span>条形底部实线 = 关键任务</span><span>竖虚线 = 11/14 付费试运行目标</span></div>
+</style><style>:root {
+  --ink:#252720; --muted:#62665e; --paper:#f9f9f7; --line:#e2e4de;
+  --teal:#456c5b; --blue:#58718d; --orange:#986d51;
+  --mint:#e2ede5; --sky:#e0e9f4; --peach:#f0e4d7;
+}
+body { font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif; }
+.windowbar {border-bottom:1px solid var(--line);background:#fcfcfa;}
+.bar-inner,.shell {max-width:1380px;margin:auto;padding-left:clamp(20px,5vw,80px);padding-right:clamp(20px,5vw,80px);}
+.bar-inner {height:65px;display:flex;align-items:center;justify-content:space-between;}
+.brand {display:flex;align-items:center;gap:11px;font-size:15px;font-weight:650;}
+.brand-mark {width:30px;height:30px;background:#282e29;border-radius:9px;display:flex;align-items:center;justify-content:center;gap:2px;transform:rotate(-3deg);}
+.brand-mark i {width:3px;border-radius:2px;background:#eef3e8;transform:rotate(24deg);height:9px;}
+.brand-mark i:nth-child(2) {height:16px;} .brand-mark i:last-child {height:12px;}
+.slash,.subbrand {font-weight:400;color:#777b73;} .slash {color:#b3b7b0;padding:0 2px;}
+.btn {font-size:13px;padding:6px 13px;border-radius:8px;background:transparent;}
+.btn.primary {background:#29302c;border-color:#29302c;}
+.shell {padding-top:0;} .plan-head {display:flex;align-items:center;justify-content:space-between;gap:40px;padding:42px 0 32px;}
+.eyebrow {font:600 11px/1.3 ui-monospace,Consolas,monospace;color:#6b736b;letter-spacing:.13em;}
+h1 {font-size:clamp(34px,3.5vw,51px);font-weight:650;line-height:1.18;letter-spacing:-.055em;margin:8px 0;}
+.heading-info p {font-size:13px;color:var(--muted);margin:9px 0 0;}.heading-info p span {margin:0 9px;}
+.summary-timeline {display:flex;width:min(48%,510px);padding:14px 0;}
+.summary-timeline div {flex:1;min-width:0;position:relative;display:grid;row-gap:7px;}
+.summary-timeline time {font:500 17px ui-monospace,Consolas,monospace;letter-spacing:-1px;}
+.summary-timeline span {font-size:12px;color:var(--muted);}
+.summary-timeline i {position:relative;height:8px;display:block;}
+.summary-timeline i:before {content:"";position:absolute;left:0;right:0;height:1px;top:3px;background:#cbd2ca;}
+.summary-timeline i:after {content:"";position:absolute;left:0;top:0;width:7px;height:7px;border-radius:50%;background:#668372;box-shadow:0 0 0 3px var(--paper);}
+.summary-timeline div:last-child {flex:.65;}.summary-timeline div:last-child i:before {display:none;}
+.tabs {display:inline-flex;gap:2px;padding:3px;background:#eaece6;border:1px solid #e3e5df;border-radius:10px;margin:0 0 17px;}
+.tab,.tab[aria-selected=true] {border:0;padding:6px 14px;border-radius:7px;font-size:13px;}
+.tab[aria-selected=true] {background:#fff;color:#262a24;box-shadow:0 1px 3px #222c2128;}
+.tabs+.no-print,#notice:empty {display:none;}#notice:not(:empty){margin:0 0 12px;}
+.section-head {align-items:center;margin:10px 0 13px;}.section-head h2,#meeting>h2 {font-size:21px;font-weight:620;letter-spacing:-.035em;margin:0;}
+.section-head p {font-size:12px;margin:4px 0 0;}
+.filters {margin:0;gap:15px;}.filters label {font-size:12px;}.filters select {border:1px solid var(--line);padding:4px 9px;border-radius:7px;}
+input[type=checkbox] {accent-color:#435e50;vertical-align:middle;}
+.table-wrap {border-color:#dcdfd8;border-radius:13px;box-shadow:0 2px 5px #39413806;}
+.gantt {width:100%;min-width:900px;table-layout:fixed;}
+.gantt .taskcell {width:clamp(220px,21vw,290px);min-width:0;padding:0 14px;}
+.gantt .day {width:auto;min-width:0;font:11px ui-monospace,Consolas,monospace;}
+.gantt thead th {height:35px;background:#f8f9f6;color:#62675e;}
+.gantt thead .date-focus {background:#e5ebe3;color:#345440;}
+.gantt .band th {text-align:left;padding:6px 15px;height:30px;font-size:12px;font-weight:600;background:#f3f5f0;border-top:1px solid var(--line);}
+.band .band-dot {display:inline-block;width:8px;height:8px;border-radius:3px;margin-right:9px;background:var(--teal);}
+.band.tech .band-dot {background:var(--blue);}.band.growth .band-dot {background:var(--orange);}
+.band small {font-weight:400;color:var(--muted);margin-left:12px;}
+.gantt tbody .task-line td,.track {height:34px;}
+.task-name {display:flex;align-items:baseline;gap:9px;text-align:left;padding:4px 0;border:0;background:transparent;color:var(--ink);width:100%;font-size:12px;line-height:1.4;}
+.task-name small {font:11px ui-monospace,Consolas,monospace;color:#767d72;min-width:18px;}
+.task-name:hover span {text-decoration:underline;text-underline-offset:3px;}
+.track {background:repeating-linear-gradient(to right,transparent 0,transparent calc(100% / 34 - 1px),#edefe9 calc(100% / 34 - 1px),#edefe9 calc(100% / 34));}
+.track:before {border-left:1px dashed #8b9b85;}
+.bar {top:8px;height:18px;border-radius:5px;padding:0 5px;line-height:18px;font:10px ui-monospace,Consolas,monospace;transition:filter .15s,transform .15s;}
+.bar.critical {box-shadow:inset 2px 0 0 currentColor;}.bar:hover {filter:brightness(.94);transform:translateY(-1px);}
+.task-line:hover td,.gantt .task-line:hover .taskcell {background-color:#f9fbf7;}
+.mobile-date {display:none;}.chart-key {display:flex;gap:15px;flex-wrap:wrap;font-size:11px;color:var(--muted);margin:9px 0 20px;}
+.metric,.card {border:1px solid var(--line);border-radius:12px;box-shadow:none;}
+.metric strong {font-weight:550;font-variant-numeric:tabular-nums;letter-spacing:-.05em;}
+.note,.note.warn {background:#f1f3ed;border:1px solid var(--line);border-radius:10px;font-size:13px;}
+#acceptance {margin:20px 0;}#acceptance summary {cursor:pointer;font-size:17px;font-weight:600;padding:14px 0;}
+#meeting>h2 {margin:12px 0 16px;}#meeting td:first-child {font-variant-numeric:tabular-nums;white-space:nowrap;}
+dialog {border:1px solid #d9ded6;border-radius:18px;box-shadow:0 20px 80px #18261c29;}
+dialog::backdrop {background:#252d293e;backdrop-filter:blur(4px);}
+@media(max-width:800px){
+ .bar-inner {height:54px;}.tools {width:auto;}.plan-head {align-items:start;flex-direction:column;gap:16px;padding:26px 0 14px;}
+ .summary-timeline {width:100%;padding:4px 0 9px;}.summary-timeline time {font-size:15px;}
+ .section-head {align-items:start;gap:12px;}.subbrand,.slash{display:none;}
+}
+@media screen and (max-width:650px){
+ .gantt {min-width:0;table-layout:auto;}.gantt thead,.task-line td:nth-child(2),.chart-key {display:none;}
+ .gantt,.gantt tbody,.gantt .task-line {display:block;width:100%;}
+ .gantt .band {display:block;}.gantt .band th {display:block;height:auto;}
+ .gantt .task-line .taskcell {display:flex;align-items:center;justify-content:space-between;width:100%;height:auto;min-height:46px;position:static;padding:6px 12px;}
+ .task-name {min-height:34px;align-items:center;}.mobile-date {display:block;white-space:nowrap;font:10px ui-monospace,Consolas,monospace;color:var(--muted);}
+ .metrics {margin-top:16px;}.shell,.bar-inner{padding-left:16px;padding-right:16px;}
+}
+@media(prefers-reduced-motion:reduce){*{transition:none!important;}}
+@media print{
+ .windowbar,.tabs,#notice {display:none!important;}
+ .shell{padding:0;}.plan-head {padding:0 0 12px;}.summary-timeline{width:45%;}
+ .task-name {font-size:10px;}.gantt .taskcell{width:225px;}.gantt .band th{height:18px;padding:2px 10px;}
+ .gantt .task-line td,.track{height:21px!important;}.bar{height:16px;top:2px;}
+ #acceptance{break-before:page;}.chart-key{margin:5px 0;}.metrics{margin:7px 0;}.metrics .metric{padding:6px 10px;}
+}
+</style></head><body><div class="windowbar"><div class="bar-inner"><div class="brand"><span class="brand-mark" aria-hidden="true"><i></i><i></i><i></i></span>同好制所<span class="slash">/</span><span class="subbrand">团队工作区</span></div><div class="tools"><button class="btn" id="printBtn">打印</button><button class="btn primary" id="saveBtn">保存副本 ↓</button></div></div></div><main class="shell">
+<header class="plan-head"><div class="heading-info"><span class="eyebrow">PAYATHON 2026</span><h1>项目排期</h1><p>11 月 6 日 — 12 月 9 日<span>·</span>3 位成员<span>·</span>24 项任务</p></div>
+<div class="summary-timeline" aria-label="关键交付日期"><div><time>11.10</time><i></i><span>模板定稿</span></div><div><time>11.14</time><i></i><span>付费试运行</span></div><div><time>11.23</time><i></i><span>首次提交</span></div><div><time>12.07</time><i></i><span>最终核对</span></div></div></header>
+<nav class="tabs" role="tablist" aria-label="排期视图"><button class="tab" id="tab-schedule" role="tab" aria-selected="true" aria-controls="schedule" data-tab="schedule">任务时间线</button><button class="tab" id="tab-meeting" role="tab" aria-selected="false" aria-controls="meeting" data-tab="meeting">节点与分工</button></nav><div id="notice" role="status"></div>
+<section id="schedule" role="tabpanel" aria-labelledby="tab-schedule">
+<div class="section-head"><div><h2>项目甘特图</h2><p class="muted">按负责人分组，点选任务可查看日期、依赖与完成标准。</p></div><div class="filters"><label>负责人 <select id="ownerFilter"><option value="all">全部成员</option><option value="design">产品 / 设计</option><option value="tech">技术</option><option value="growth">用户 / 商业</option></select></label><label><input type="checkbox" id="criticalOnly"> 只看关键任务</label></div></div>
 <div class="table-wrap"><table class="gantt" id="gantt" aria-label="11月6日至12月9日项目甘特图"></table></div>
-<div class="metrics" id="workload"></div>
-<div class="note warn"><strong>工时先认领，再定承诺。</strong>下方是粗估净工作时长，包含准备与验收，不含等待审核、运输和日常沟通；建议各自再留 25% 余量。若前两周无法提供对应时间，先缩到 1 种物料、2 款版式，保留支付与用户验证。</div>
-<div class="section-head"><div><h2>任务验收清单</h2><p class="state-note">可以修改状态并填写阻塞原因。变更保存在当前浏览器；发给队友前点击“下载当前排期副本”。它不是多人实时同步文档。</p></div></div>
-<div class="table-wrap"><table class="task-table"><thead><tr><th>任务 / 负责人</th><th>时间 · 工时</th><th>前置依赖</th><th>完成标准</th><th>状态 / 阻塞</th></tr></thead><tbody id="taskRows"></tbody></table></div>
+<div class="chart-key"><span>点线标记 11/14 试运行</span><span>色条左侧深色标记关键任务</span></div><div class="metrics" id="workload"></div>
+<div class="note warn"><strong>工时先认领，再定承诺。</strong>以上为粗估净工作时长，包含准备与验收，不含等待审核、运输和日常沟通；建议各自再留 25% 余量。若前两周无法提供对应时间，先缩到 1 种物料、2 款版式，保留支付与用户验证。</div>
+<details id="acceptance"><summary>任务状态与验收清单</summary><div class="section-head"><div><p class="state-note">更改保存在当前浏览器，点“保存副本”可将进度发给队友。</p></div></div>
+<div class="table-wrap"><table class="task-table"><thead><tr><th>任务 / 负责人</th><th>时间 · 工时</th><th>前置依赖</th><th>完成标准</th><th>状态 / 阻塞</th></tr></thead><tbody id="taskRows"></tbody></table></div></details>
 </section>
 
 <section id="meeting" role="tabpanel" aria-labelledby="tab-meeting" hidden><h2>交付节点</h2><div class="table-wrap"><table><thead><tr><th>日期</th><th>牵头人</th><th>本次检查的交付物</th></tr></thead><tbody>
@@ -24,7 +109,7 @@
 <tr><td>11/30</td><td>技术</td><td>冻结大功能，集中修复影响制作、支付或导出的缺陷。</td></tr>
 <tr><td>12/7</td><td>三人</td><td>完成材料与审核状态的最终核对，12/8—9 留作补件和修复。</td></tr></tbody></table></div>
 <p class="note">上表为团队目标。官方报名截止为 12/1 23:59:59，作品提交截止为 12/9 23:59:59。<a href="https://render.alipay.com/p/yuyan/180022670000190962/index.html#/activity-rules">查看活动细则</a></p>
-<div class="card"><h3>负责人</h3><div class="names"><label>产品 / 设计<input id="name-design" maxlength="24"></label><label>技术<input id="name-tech" maxlength="24"></label><label>用户 / 商业<input id="name-growth" maxlength="24"></label></div><p class="state-note">改名、状态和备注保存在当前浏览器。分享入口展示团队的基准排期，下载副本可带走本机修改。</p></div>
+<div class="card" style="margin-top:20px"><h3>负责人</h3><div class="names"><label>产品 / 设计<input id="name-design" maxlength="24"></label><label>技术<input id="name-tech" maxlength="24"></label><label>用户 / 商业<input id="name-growth" maxlength="24"></label></div><p class="state-note">改名、状态和备注保存在当前浏览器。分享入口展示团队的基准排期，下载副本可带走本机修改。</p></div>
 <div class="card" style="margin-top:16px"><h3>会议决定与阻塞事项</h3><textarea id="meetingNotes" rows="4" style="width:100%" placeholder="记录负责人、下一步和复查日期"></textarea></div></section></main>
 <dialog id="taskDialog"><button class="btn dialog-close" id="closeDialog">关闭</button><div id="dialogBody"></div></dialog><script id="embeddedState" type="application/json">{}</script><script>const tasks=[
 {id:'D1',o:'design',n:'锁定 3 款样例与生成边界',s:'11-06',e:'11-08',h:4,k:1,dep:[],a:'选定小卡 / 明信片共 3 款；写清可换字段、字数和照片要求。'},
@@ -65,7 +150,7 @@ function render(){
  document.querySelectorAll('[data-owner]').forEach(el=>el.textContent=state.names[el.dataset.owner]);
  let head='<thead><tr><th class="taskcell">任务 / 负责人</th>';
  for(let i=0;i<34;i++){const d=new Date(Date.UTC(2026,10,6+i)),m=d.getUTCMonth()+1,n=d.getUTCDate();head+='<th class="day '+((d.getUTCDay()===0||d.getUTCDay()===6)?'weekend ':'')+((i===8||i===25||i===33)?'date-focus':'')+'">'+(n===1||i===0?m+'/':'')+n+'</th>';}
- const shown=visibleTasks();$('gantt').innerHTML=head+'</tr></thead><tbody>'+shown.map(t=>'<tr><td class="taskcell"><span>'+esc(t.id+' '+t.n)+'</span><span class="owner-label">'+esc(state.names[t.o])+'</span></td><td colspan="34"><div class="track"><button class="bar '+t.o+(t.k?' critical':'')+(state.status[t.id]==='完成'?' done':'')+'" style="left:'+day(t.s)/34*100+'%;width:'+(day(t.e)-day(t.s)+1)/34*100+'%" data-task="'+t.id+'" aria-label="'+esc(t.n+'，'+t.s+' 至 '+t.e+'，'+state.names[t.o])+'">'+esc(t.id+' · '+t.h+'h')+'</button></div></td></tr>').join('')+'</tbody>';
+ const order=['design','tech','growth'];const shown=visibleTasks().sort((a,b)=>order.indexOf(a.o)-order.indexOf(b.o)||day(a.s)-day(b.s));$('gantt').innerHTML=head+'</tr></thead><tbody>'+shown.map((t,index)=>(index===0||shown[index-1].o!==t.o?'<tr class="band '+t.o+'"><th colspan="35"><span class="band-dot"></span>'+esc(state.names[t.o])+'<small>'+shown.filter(v=>v.o===t.o).length+' 项任务</small></th></tr>':'')+'<tr class="task-line"><td class="taskcell"><button class="task-name" data-task="'+t.id+'"><small>'+t.id+'</small><span>'+esc(t.n)+'</span></button><span class="mobile-date">'+t.s.replace('-','/')+' — '+t.e.replace('-','/')+'</span></td><td colspan="34"><div class="track"><button class="bar '+t.o+(t.k?' critical':'')+(state.status[t.id]==='完成'?' done':'')+'" style="left:'+day(t.s)/34*100+'%;width:'+(day(t.e)-day(t.s)+1)/34*100+'%" data-task="'+t.id+'" aria-label="'+esc(t.n+'，'+t.s+' 至 '+t.e+'，'+state.names[t.o])+'">'+esc((day(t.e)===day(t.s)?'':t.id+' · ')+t.h+'h')+'</button></div></td></tr>').join('')+'</tbody>';
  $('taskRows').innerHTML=shown.map(t=>'<tr><td><span class="title">'+esc(t.id+' '+t.n)+'</span> '+(t.k?'<span class="pill">关键</span>':'')+'<small>'+esc(state.names[t.o])+'</small></td><td>'+t.s.replace('-','/')+'—'+t.e.replace('-','/')+'<small>约 '+t.h+' 小时</small></td><td>'+esc(t.dep.join('、')||'可直接开始')+'</td><td>'+esc(t.a)+'</td><td><select aria-label="'+esc(t.n)+'状态" data-status="'+t.id+'">'+['待确认','待开始','进行中','阻塞','完成'].map(s=>'<option'+((state.status[t.id]||'待确认')===s?' selected':'')+'>'+s+'</option>').join('')+'</select><small><input style="width:150px;font-size:11px;padding:5px" aria-label="'+esc(t.n)+'阻塞说明" data-block="'+t.id+'" placeholder="阻塞 / 需要谁协助" value="'+esc(state.blocks[t.id]||'')+'"></small></td></tr>').join('');
  $('workload').innerHTML=['design','tech','growth'].map(o=>{const total=tasks.filter(t=>t.o===o).reduce((a,t)=>a+t.h,0),first=tasks.filter(t=>t.o===o&&day(t.e)<=8).reduce((a,t)=>a+t.h,0);return '<div class="metric"><label>'+esc(state.names[o])+'</label><strong>'+total+'h</strong><span class="small muted">全期粗估 · 截至试运行约 '+first+'h</span></div>';}).join('')+'<div class="metric"><label>已验收任务 / 全部任务</label><strong>'+tasks.filter(t=>state.status[t.id]==='完成').length+' / '+tasks.length+'</strong><span class="small muted">状态需负责人确认</span></div>';
 }
@@ -80,8 +165,9 @@ $('closeDialog').addEventListener('click',()=>$('taskDialog').close());
 for(const o of ['design','tech','growth']){$('name-'+o).value=state.names[o];$('name-'+o).addEventListener('change',e=>{state.names[o]=e.target.value.trim()||defaults.names[o];e.target.value=state.names[o];persist();render();});}
 document.querySelectorAll('[data-check]').forEach(c=>{c.checked=!!state.checks[c.dataset.check];c.addEventListener('change',()=>{state.checks[c.dataset.check]=c.checked;persist();});});
 $('meetingNotes').value=state.notes;$('meetingNotes').addEventListener('input',e=>{state.notes=e.target.value;persist();});
-let printFilters=null;window.addEventListener('beforeprint',()=>{printFilters=[$('ownerFilter').value,$('criticalOnly').checked];$('ownerFilter').value='all';$('criticalOnly').checked=false;render();});window.addEventListener('afterprint',()=>{if(printFilters){$('ownerFilter').value=printFilters[0];$('criticalOnly').checked=printFilters[1];render();printFilters=null;}});
+let printDetails=false;window.addEventListener('beforeprint',()=>{printDetails=$('acceptance').open;$('acceptance').open=true;});window.addEventListener('afterprint',()=>{$('acceptance').open=printDetails;});let printFilters=null;window.addEventListener('beforeprint',()=>{printFilters=[$('ownerFilter').value,$('criticalOnly').checked];$('ownerFilter').value='all';$('criticalOnly').checked=false;render();});window.addEventListener('afterprint',()=>{if(printFilters){$('ownerFilter').value=printFilters[0];$('criticalOnly').checked=printFilters[1];render();printFilters=null;}});
 $('printBtn').addEventListener('click',()=>window.print());
 $('saveBtn').addEventListener('click',()=>{const copy=document.documentElement.cloneNode(true),snapshot={...state,snapshotId:Date.now().toString(36)};copy.querySelector('#embeddedState').textContent=JSON.stringify(snapshot).replace(/</g,'\\u003c');copy.querySelector('#notice').textContent='';copy.querySelector('#taskDialog').removeAttribute('open');copy.querySelectorAll('section[role=tabpanel]').forEach(s=>s.hidden=s.id!=='schedule');copy.querySelectorAll('.tab').forEach(b=>b.setAttribute('aria-selected',String(b.dataset.tab==='schedule')));const blob=new Blob(['<!doctype html>\n'+copy.outerHTML],{type:'text/html;charset=utf-8'}),url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download='同好制所-推进排期-'+new Date().toISOString().slice(0,10)+'.html';a.click();setTimeout(()=>URL.revokeObjectURL(url),1000);$('notice').textContent='已生成含当前名字、状态与备注的副本，可把下载的 HTML 发给队友。';});
+$('taskDialog').addEventListener('click',event=>{if(event.target!==$('taskDialog'))return;const box=$('taskDialog').getBoundingClientRect();if(event.clientX<box.left||event.clientX>box.right||event.clientY<box.top||event.clientY>box.bottom)$('taskDialog').close();});
 render();
 </script></body></html>
