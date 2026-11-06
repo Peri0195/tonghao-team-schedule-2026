@@ -87,87 +87,69 @@ dialog::backdrop {background:#252d293e;backdrop-filter:blur(4px);}
  .gantt .task-line td,.track{height:21px!important;}.bar{height:16px;top:2px;}
  #acceptance{break-before:page;}.chart-key{margin:5px 0;}.metrics{margin:7px 0;}.metrics .metric{padding:6px 10px;}
 }
+</style><style>
+.track:before{display:none}.track{height:42px}.gantt .task-line td{height:42px}
+.deadline{position:absolute;top:5px;transform:translateX(-50%);height:33px;width:46px;padding:0;display:flex;align-items:center;justify-content:center;gap:3px;flex-direction:column;border:0;background:transparent;color:var(--teal)}
+.deadline.tech{color:var(--blue)}.deadline.growth{color:var(--orange)}
+.diamond{width:8px;height:8px;background:currentColor;transform:rotate(45deg);border-radius:2px}
+.due-label{font:10px ui-monospace,Consolas,monospace;color:var(--muted)}
+.deadline:hover .diamond{box-shadow:0 0 0 4px #82978a22}
+.req-owner{margin:24px 0 12px}.requirement{background:#fff;border:1px solid var(--line);border-radius:10px;margin:8px 0;padding:12px 16px}
+.requirement summary{display:flex;justify-content:space-between;gap:20px;cursor:pointer;font-size:14px}.requirement time{color:var(--muted);font-variant-numeric:tabular-nums}.requirement p{margin-top:16px;font-size:14px;color:var(--muted)}
+.due-heading{color:var(--teal);font-weight:600}
+@media print{.deadline{top:0;height:22px}.gantt .task-line td,.track{height:27px!important}}
 </style></head><body><div class="windowbar"><div class="bar-inner"><div class="brand"><span class="brand-mark" aria-hidden="true"><i></i><i></i><i></i></span>同好制所<span class="slash">/</span><span class="subbrand">团队工作区</span></div><div class="tools"><button class="btn" id="printBtn">打印</button><button class="btn primary" id="saveBtn">保存副本 ↓</button></div></div></div><main class="shell">
-<header class="plan-head"><div class="heading-info"><span class="eyebrow">PAYATHON 2026</span><h1>项目排期</h1><p>11 月 6 日 — 12 月 9 日<span>·</span>3 位成员<span>·</span>24 项任务</p></div>
+<header class="plan-head"><div class="heading-info"><span class="eyebrow">PAYATHON 2026</span><h1>项目排期</h1><p>11 月 6 日 — 12 月 9 日<span>·</span>3 位成员<span>·</span>关键节点</p></div>
 <div class="summary-timeline" aria-label="关键交付日期"><div><time>11.10</time><i></i><span>模板定稿</span></div><div><time>11.14</time><i></i><span>付费试运行</span></div><div><time>11.23</time><i></i><span>首次提交</span></div><div><time>12.07</time><i></i><span>最终核对</span></div></div></header>
-<nav class="tabs" role="tablist" aria-label="排期视图"><button class="tab" id="tab-schedule" role="tab" aria-selected="true" aria-controls="schedule" data-tab="schedule">任务时间线</button><button class="tab" id="tab-meeting" role="tab" aria-selected="false" aria-controls="meeting" data-tab="meeting">节点与分工</button></nav><div id="notice" role="status"></div>
+<nav class="tabs" role="tablist" aria-label="排期视图"><button class="tab" id="tab-schedule" role="tab" aria-selected="true" aria-controls="schedule" data-tab="schedule">任务时间线</button><button class="tab" id="tab-meeting" role="tab" aria-selected="false" aria-controls="meeting" data-tab="meeting">工作要求</button></nav><div id="notice" role="status"></div>
 <section id="schedule" role="tabpanel" aria-labelledby="tab-schedule">
-<div class="section-head"><div><h2>项目甘特图</h2><p class="muted">按负责人分组，点选任务可查看日期、依赖与完成标准。</p></div><div class="filters"><label>负责人 <select id="ownerFilter"><option value="all">全部成员</option><option value="design">产品 / 设计</option><option value="tech">技术</option><option value="growth">用户 / 商业</option></select></label><label><input type="checkbox" id="criticalOnly"> 只看关键任务</label></div></div>
-<div class="table-wrap"><table class="gantt" id="gantt" aria-label="11月6日至12月9日项目甘特图"></table></div>
-<div class="chart-key"><span>点线标记 11/14 试运行</span><span>色条左侧深色标记关键任务</span></div><div class="metrics" id="workload"></div>
-<div class="note warn"><strong>工时先认领，再定承诺。</strong>以上为粗估净工作时长，包含准备与验收，不含等待审核、运输和日常沟通；建议各自再留 25% 余量。若前两周无法提供对应时间，先缩到 1 种物料、2 款版式，保留支付与用户验证。</div>
-<details id="acceptance"><summary>任务状态与验收清单</summary><div class="section-head"><div><p class="state-note">更改保存在当前浏览器，点“保存副本”可将进度发给队友。</p></div></div>
-<div class="table-wrap"><table class="task-table"><thead><tr><th>任务 / 负责人</th><th>时间 · 工时</th><th>前置依赖</th><th>完成标准</th><th>状态 / 阻塞</th></tr></thead><tbody id="taskRows"></tbody></table></div></details>
-</section>
+<div class="section-head"><div><h2>关键节点</h2><p class="muted">按负责人查看截止日期，点选节点了解工作要求。</p></div><div class="filters"><label>负责人 <select id="ownerFilter"><option value="all">全部成员</option><option value="design">产品 / 设计</option><option value="tech">技术</option><option value="growth">用户 / 商业</option></select></label></div></div>
+<div class="table-wrap"><table class="gantt" id="gantt" aria-label="11月6日至12月9日关键节点"></table></div>
+<p class="state-note" style="margin-top:14px">标记对应截止日。日期为团队推进目标，具体要求见节点详情。</p></section>
 
-<section id="meeting" role="tabpanel" aria-labelledby="tab-meeting" hidden><h2>交付节点</h2><div class="table-wrap"><table><thead><tr><th>日期</th><th>牵头人</th><th>本次检查的交付物</th></tr></thead><tbody>
-<tr><td>11/8</td><td>三人</td><td>确认首发范围、报名与支付开通进度，核实每人的可用工时。</td></tr>
-<tr><td>11/10</td><td>产品 / 设计</td><td>提交三款小卡或明信片样例及各自的换图、字数和生成规则。</td></tr>
-<tr><td>11/14</td><td>技术</td><td>演示正式环境从预览到付款、下载的完整流程。技术与设计验收通过后启动付费试用。</td></tr>
-<tr><td>11/22</td><td>用户 / 商业</td><td>汇总招募、预览、付款、交付人数和未完成原因，由团队选定下一轮改进项。</td></tr>
-<tr><td>11/23</td><td>用户 / 商业</td><td>技术确认正式入口可用后，提交首版参赛作品并跟进审核。</td></tr>
-<tr><td>11/30</td><td>技术</td><td>冻结大功能，集中修复影响制作、支付或导出的缺陷。</td></tr>
-<tr><td>12/7</td><td>三人</td><td>完成材料与审核状态的最终核对，12/8—9 留作补件和修复。</td></tr></tbody></table></div>
-<p class="note">上表为团队目标。官方报名截止为 12/1 23:59:59，作品提交截止为 12/9 23:59:59。<a href="https://render.alipay.com/p/yuyan/180022670000190962/index.html#/activity-rules">查看活动细则</a></p>
-<div class="card" style="margin-top:20px"><h3>负责人</h3><div class="names"><label>产品 / 设计<input id="name-design" maxlength="24"></label><label>技术<input id="name-tech" maxlength="24"></label><label>用户 / 商业<input id="name-growth" maxlength="24"></label></div><p class="state-note">改名、状态和备注保存在当前浏览器。分享入口展示团队的基准排期，下载副本可带走本机修改。</p></div>
-<div class="card" style="margin-top:16px"><h3>会议决定与阻塞事项</h3><textarea id="meetingNotes" rows="4" style="width:100%" placeholder="记录负责人、下一步和复查日期"></textarea></div></section></main>
-<dialog id="taskDialog"><button class="btn dialog-close" id="closeDialog">关闭</button><div id="dialogBody"></div></dialog><script id="embeddedState" type="application/json">{}</script><script>const tasks=[
-{id:'D1',o:'design',n:'锁定 3 款样例与生成边界',s:'11-06',e:'11-08',h:4,k:1,dep:[],a:'选定小卡 / 明信片共 3 款；写清可换字段、字数和照片要求。'},
-{id:'G1',o:'growth',n:'报名、收款开通与渠道核对',s:'11-06',e:'11-08',h:4,k:1,dep:[],a:'确认组长与同一支付宝账号、开通路径；开始办理。核对小红书当前账号可用入口，不默认能外链。'},
-{id:'T1',o:'tech',n:'盘点上线条件与支付方案',s:'11-06',e:'11-08',h:4,k:1,dep:[],a:'列出部署、正式访问、模板 PR 与支付状态；确认接口方案和工作量。'},
-{id:'D2',o:'design',n:'3 款模板精修与字体装饰',s:'11-09',e:'11-10',h:7,k:1,dep:['D1'],a:'完整成品图与可编辑图层；含字体、装饰、抠图轮廓和背面；原模板保留。'},
-{id:'G2',o:'growth',n:'招募首批目标试用者',s:'11-08',e:'11-12',h:5,k:0,dep:['G1'],a:'分批招募 10 位近期有物料需求的试用者，记录场景、可测试时间和素材准备情况。'},
-{id:'T2',o:'tech',n:'接入精选模板与受约束生成',s:'11-09',e:'11-12',h:8,k:1,dep:['D1','T1'],a:'先接模板字段，D2 后接入定稿；可换图改字改色，限制自由布局；预览可编辑。'},
-{id:'D3',o:'design',n:'跨素材验收 / 导出文件校对',s:'11-11',e:'11-13',h:6,k:1,dep:['D2'],a:'每款至少测试 3 组素材及长短文案，检查抠图与遮挡。打开导出的 PNG 和 PDF，核对正反面、清晰度与成品尺寸。'},
-{id:'T3',o:'tech',n:'正式支付与下载交付',s:'11-09',e:'11-13',h:10,k:1,dep:['T1','G1'],a:'开通就绪后测试真实收款；服务端验签确认、重复通知不重复发权益，成功 / 失败 / 退款反馈清晰。等待开通与开发并行。'},
-{id:'G3',o:'growth',n:'发布样例 / 录屏与试用访谈',s:'11-10',e:'11-13',h:5,k:0,dep:['D2'],a:'11/10 样例定稿后发首篇，11/12 发真实操作；记录选择、适配障碍、交付需求，说明开发者身份。'},
-{id:'T4',o:'tech',n:'端到端验收与限量付费上线',s:'11-14',e:'11-14',h:3,k:1,dep:['T2','T3','D3'],a:'新用户预览 → 付款 → 权益 → 下载 → 再访问跑通；满足上线条件后开放试用，未通过的项目登记负责人和修复日期。'},
-{id:'G4',o:'growth',n:'组织付费试用与交付跟踪',s:'11-14',e:'11-19',h:6,k:1,dep:['T4','G2'],a:'按团队确认的方案组织试用，记录实际付款、退款与交付结果。'},
-{id:'D4',o:'design',n:'首批用户修稿与工时记录',s:'11-14',e:'11-18',h:5,k:0,dep:['D3','T4'],a:'保存修改前后的同版对照，记录每单修稿原因、人工分钟数和交付结果。'},
-{id:'T5',o:'tech',n:'修复试用问题 / 数据记录',s:'11-15',e:'11-19',h:5,k:0,dep:['T4'],a:'修保存、导出与支付阻塞；记录预览、有效付款和交付，区分自助完成与人工协助。'},
-{id:'D5',o:'design',n:'提炼可复用的模板修改规则',s:'11-19',e:'11-21',h:2,k:0,dep:['D4'],a:'从首批试用中选出重复返工最多的一项，给技术同伴一条可执行的布局规则及验收样例。'},
-{id:'G5',o:'growth',n:'付费意愿复盘 / 案例发布',s:'11-21',e:'11-22',h:3,k:1,dep:['G4'],a:'结合 10 位合格试用者目标分析；样本不足先补招募。分类未购原因，给下一轮问题排序。'},
-{id:'G6',o:'growth',n:'首版参赛材料与提交审核',s:'11-21',e:'11-23',h:4,k:1,dep:['T4'],a:'核对实际表单字段；备简介、截图、演示、链接与试用结果；T6 确认公开入口后，11/23 目标提交并跟进审核。'},
-{id:'T6',o:'tech',n:'正式体验入口 / 稳定性检查',s:'11-21',e:'11-23',h:3,k:1,dep:['T5'],a:'评委无需 Vercel 团队权限可访问；正常注册、AI、支付与导出可用，审查失败恢复。'},
-{id:'D6',o:'design',n:'按反馈只扩 1 个高需求场景',s:'11-23',e:'11-27',h:5,k:0,dep:['G5'],a:'优先修表现最差的模板；质量达标才新增手幅或套装；不同时扩多类物料。'},
-{id:'T7',o:'tech',n:'适配优化 / 稳定版本冻结',s:'11-24',e:'11-30',h:6,k:0,dep:['T6','G5'],a:'落地最关键适配改进；11/30 冻结大功能，保留问题修复。'},
-{id:'G7',o:'growth',n:'持续真实获客与赛事页反馈',s:'11-24',e:'12-05',h:8,k:0,dep:['G5','G6'],a:'延续有效内容与渠道；审核通过后收集赛事页真实反馈，记录去重购买与交付，不刷量。'},
-{id:'D7',o:'design',n:'整理样例与演示叙事',s:'11-30',e:'12-04',h:4,k:0,dep:['D6'],a:'展示需求 → 生成 → 编辑 → 成品；如实说明人工参与与素材来源。'},
-{id:'T8',o:'tech',n:'回归检查 / 评审期运行准备',s:'12-01',e:'12-05',h:4,k:1,dep:['T7'],a:'新账户完成主流程；测试异常与重复付款通知，确认额度、故障联系与持续运行安排。'},
-{id:'G8',o:'growth',n:'补齐材料 / 最终审核状态',s:'12-06',e:'12-07',h:4,k:1,dep:['G6','G7'],a:'核对材料、数据、截图与线上版本一致；12/7 检查审核及全部必填字段，不假定提交即通过。'},
-{id:'T9',o:'tech',n:'提交缓冲与应急修复',s:'12-06',e:'12-09',h:2,k:1,dep:['T8'],a:'保留应急窗口；12/9 23:59:59 前确认提交。此后评审期保持服务可用。'}
-];
-const defaults={names:{design:'产品 / 设计',tech:'技术',growth:'用户 / 商业'},status:{},blocks:{},checks:{},notes:''};
-const embedded=JSON.parse(document.getElementById('embeddedState').textContent||'{}');
-const storageKey='tonghao-schedule-v3-'+(embedded.snapshotId||'base');
-let saved={};try{saved=JSON.parse(localStorage.getItem(storageKey)||'{}')}catch{}
-const state={...defaults,...embedded,...saved};
-const $=id=>document.getElementById(id);const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-const day=s=>Math.round((Date.parse('2026-'+s+'T00:00:00Z')-Date.parse('2026-11-06T00:00:00Z'))/864e5);
-function persist(){try{localStorage.setItem(storageKey,JSON.stringify(state));$('notice').textContent='已保存在当前浏览器；分享前请下载副本。';}catch{$('notice').textContent='当前浏览器无法本地保存，请下载副本保留修改。';}}
-function visibleTasks(){return tasks.filter(t=>($('ownerFilter').value==='all'||t.o===$('ownerFilter').value)&&(!$('criticalOnly').checked||t.k));}
+<section id="meeting" hidden role="tabpanel" aria-labelledby="tab-meeting"><h2>工作要求</h2><p class="muted">按负责人展开查看各节点的交付内容。</p><div id="requirements"></div><p class="note">报名截止为 12/1 23:59:59，作品提交截止为 12/9 23:59:59。<a href="https://render.alipay.com/p/yuyan/180022670000190962/index.html#/activity-rules">赛事细则</a></p></section></main>
+<dialog id="taskDialog"><button class="btn dialog-close" id="closeDialog">关闭</button><div id="dialogBody"></div></dialog><script>
+const tasks = [{"id": "D1", "o": "design", "n": "模板与生成规则定稿", "e": "11-10", "a": "确定首发版式、字体与装饰风格，整理换图、文案和生成规则。"}, {"id": "D2", "o": "design", "n": "设计效果与导出验收", "e": "11-13", "a": "检查真实素材适配、抠图、文字遮挡与导出文件效果。"}, {"id": "D3", "o": "design", "n": "用户反馈改进完成", "e": "11-27", "a": "根据首轮反馈优化模板和生成效果，整理可复用的修改规则。"}, {"id": "D4", "o": "design", "n": "展示案例准备完成", "e": "12-04", "a": "整理能展示完整创作流程的成品案例与演示素材。"}, {"id": "T1", "o": "tech", "n": "技术方案与上线条件确认", "e": "11-08", "a": "核对网站部署、支付开通条件、生成流程和交付方案。"}, {"id": "T2", "o": "tech", "n": "付费试运行上线", "e": "11-14", "a": "验收从预览、付款到下载的完整路径，满足上线条件后开放试用。"}, {"id": "T3", "o": "tech", "n": "稳定版本与功能冻结", "e": "11-30", "a": "修复用户反馈的关键问题，冻结新增功能，转入稳定性检查。"}, {"id": "T4", "o": "tech", "n": "上线回归检查完成", "e": "12-05", "a": "核对新用户制作、支付、导出和异常恢复，做好评审期间运行准备。"}, {"id": "G1", "o": "growth", "n": "报名与收款开通推进", "e": "11-08", "a": "确认报名负责人及收款账号，提交所需材料并跟进开通状态。"}, {"id": "G2", "o": "growth", "n": "首轮用户验证复盘", "e": "11-22", "a": "组织试用，汇总使用、付款、交付与未完成原因，确定下一轮优先级。"}, {"id": "G3", "o": "growth", "n": "首版参赛作品提交", "e": "11-23", "a": "技术确认正式体验入口后提交作品，核对材料并跟进审核。"}, {"id": "G4", "o": "growth", "n": "最终材料与审核核对", "e": "12-07", "a": "确认提交内容与线上版本一致，核对必填项与审核状态。"}];
+const names = {design:'产品 / 设计',tech:'技术',growth:'用户 / 商业'};
+const $ = id => document.getElementById(id);
+const day = date => (Date.parse('2026-'+date+'T00:00:00Z')-Date.parse('2026-11-06T00:00:00Z'))/86400000;
 function render(){
- document.querySelectorAll('[data-owner]').forEach(el=>el.textContent=state.names[el.dataset.owner]);
- let head='<thead><tr><th class="taskcell">任务 / 负责人</th>';
- for(let i=0;i<34;i++){const d=new Date(Date.UTC(2026,10,6+i)),m=d.getUTCMonth()+1,n=d.getUTCDate();head+='<th class="day '+((d.getUTCDay()===0||d.getUTCDay()===6)?'weekend ':'')+((i===8||i===25||i===33)?'date-focus':'')+'">'+(n===1||i===0?m+'/':'')+n+'</th>';}
- const order=['design','tech','growth'];const shown=visibleTasks().sort((a,b)=>order.indexOf(a.o)-order.indexOf(b.o)||day(a.s)-day(b.s));$('gantt').innerHTML=head+'</tr></thead><tbody>'+shown.map((t,index)=>(index===0||shown[index-1].o!==t.o?'<tr class="band '+t.o+'"><th colspan="35"><span class="band-dot"></span>'+esc(state.names[t.o])+'<small>'+shown.filter(v=>v.o===t.o).length+' 项任务</small></th></tr>':'')+'<tr class="task-line"><td class="taskcell"><button class="task-name" data-task="'+t.id+'"><small>'+t.id+'</small><span>'+esc(t.n)+'</span></button><span class="mobile-date">'+t.s.replace('-','/')+' — '+t.e.replace('-','/')+'</span></td><td colspan="34"><div class="track"><button class="bar '+t.o+(t.k?' critical':'')+(state.status[t.id]==='完成'?' done':'')+'" style="left:'+day(t.s)/34*100+'%;width:'+(day(t.e)-day(t.s)+1)/34*100+'%" data-task="'+t.id+'" aria-label="'+esc(t.n+'，'+t.s+' 至 '+t.e+'，'+state.names[t.o])+'">'+esc((day(t.e)===day(t.s)?'':t.id+' · ')+t.h+'h')+'</button></div></td></tr>').join('')+'</tbody>';
- $('taskRows').innerHTML=shown.map(t=>'<tr><td><span class="title">'+esc(t.id+' '+t.n)+'</span> '+(t.k?'<span class="pill">关键</span>':'')+'<small>'+esc(state.names[t.o])+'</small></td><td>'+t.s.replace('-','/')+'—'+t.e.replace('-','/')+'<small>约 '+t.h+' 小时</small></td><td>'+esc(t.dep.join('、')||'可直接开始')+'</td><td>'+esc(t.a)+'</td><td><select aria-label="'+esc(t.n)+'状态" data-status="'+t.id+'">'+['待确认','待开始','进行中','阻塞','完成'].map(s=>'<option'+((state.status[t.id]||'待确认')===s?' selected':'')+'>'+s+'</option>').join('')+'</select><small><input style="width:150px;font-size:11px;padding:5px" aria-label="'+esc(t.n)+'阻塞说明" data-block="'+t.id+'" placeholder="阻塞 / 需要谁协助" value="'+esc(state.blocks[t.id]||'')+'"></small></td></tr>').join('');
- $('workload').innerHTML=['design','tech','growth'].map(o=>{const total=tasks.filter(t=>t.o===o).reduce((a,t)=>a+t.h,0),first=tasks.filter(t=>t.o===o&&day(t.e)<=8).reduce((a,t)=>a+t.h,0);return '<div class="metric"><label>'+esc(state.names[o])+'</label><strong>'+total+'h</strong><span class="small muted">全期粗估 · 截至试运行约 '+first+'h</span></div>';}).join('')+'<div class="metric"><label>已验收任务 / 全部任务</label><strong>'+tasks.filter(t=>state.status[t.id]==='完成').length+' / '+tasks.length+'</strong><span class="small muted">状态需负责人确认</span></div>';
+ let head='<thead><tr><th class="taskcell">负责人 / 节点</th>';
+ for(let i=0;i<34;i++){
+  const date=new Date(Date.UTC(2026,10,6+i));
+  head+='<th class="day">'+(i===0||date.getUTCDate()===1?(date.getUTCMonth()+1)+'/':'')+date.getUTCDate()+'</th>';
+ }
+ let rows='';
+ for(const owner of Object.keys(names)){
+  if($('ownerFilter').value!=='all'&&$('ownerFilter').value!==owner)continue;
+  rows+='<tr class="band '+owner+'"><th colspan="35"><span class="band-dot"></span>'+names[owner]+'</th></tr>';
+  for(const task of tasks.filter(t=>t.o===owner)){
+   const date=task.e.replace('-','/');
+   rows+='<tr class="task-line"><td class="taskcell"><button class="task-name" data-task="'+task.id+'">'+task.n+'</button><span class="mobile-date">'+date+'</span></td><td colspan="34"><div class="track"><button class="deadline '+owner+'" style="left:'+((day(task.e)+.5)/34*100)+'%" data-task="'+task.id+'" aria-label="'+task.n+'，截止 '+date+'"><span class="diamond"></span><span class="due-label">'+date+'</span></button></div></td></tr>';
+  }
+ }
+ $('gantt').innerHTML=head+'</tr></thead><tbody>'+rows+'</tbody>';
+ $('requirements').innerHTML=Object.keys(names).map(owner=>'<h3 class="req-owner">'+names[owner]+'</h3>'+tasks.filter(t=>t.o===owner).map(t=>'<details class="requirement"><summary><span>'+t.n+'</span><time>'+t.e.replace('-','/')+'</time></summary><p>'+t.a+'</p></details>').join('')).join('');
 }
-function activate(id){document.querySelectorAll('.tab').forEach(b=>b.setAttribute('aria-selected',String(b.dataset.tab===id)));document.querySelectorAll('section[role=tabpanel]').forEach(s=>s.hidden=s.id!==id);}
-document.querySelectorAll('.tab').forEach(b=>b.addEventListener('click',()=>activate(b.dataset.tab)));
-document.querySelector('.tabs').addEventListener('keydown',e=>{if(!['ArrowRight','ArrowLeft','Home','End'].includes(e.key))return;const tabs=[...document.querySelectorAll('.tab')];let i=tabs.indexOf(document.activeElement);if(i<0)return;e.preventDefault();i=e.key==='Home'?0:e.key==='End'?tabs.length-1:(i+(e.key==='ArrowRight'?1:-1)+tabs.length)%tabs.length;tabs[i].focus();activate(tabs[i].dataset.tab);});
-$('ownerFilter').addEventListener('change',render);$('criticalOnly').addEventListener('change',render);
-$('taskRows').addEventListener('change',e=>{if(e.target.dataset.status){state.status[e.target.dataset.status]=e.target.value;persist();render();}});
-$('taskRows').addEventListener('input',e=>{if(e.target.dataset.block){state.blocks[e.target.dataset.block]=e.target.value;persist();}});
-$('gantt').addEventListener('click',e=>{const b=e.target.closest('[data-task]');if(!b)return;const t=tasks.find(t=>t.id===b.dataset.task);$('dialogBody').innerHTML='<span class="tag '+t.o+'">'+esc(state.names[t.o])+'</span><h2 style="margin-top:16px">'+esc(t.id+' '+t.n)+'</h2><p>'+t.s.replace('-','/')+'—'+t.e.replace('-','/')+' · 约 '+t.h+' 小时</p><p><strong>前置依赖：</strong>'+esc(t.dep.map(id=>id+' '+tasks.find(x=>x.id===id).n).join('；')||'可直接开始')+'</p><p><strong>完成标准：</strong>'+esc(t.a)+'</p><p><strong>状态：</strong>'+esc(state.status[t.id]||'待确认')+'</p><p><strong>阻塞：</strong>'+esc(state.blocks[t.id]||'尚未填写')+'</p>';$('taskDialog').showModal();});
+function activate(id){
+ document.querySelectorAll('.tab').forEach(button=>button.setAttribute('aria-selected',String(button.dataset.tab===id)));
+ document.querySelectorAll('section[role=tabpanel]').forEach(section=>section.hidden=section.id!==id);
+}
+document.querySelectorAll('.tab').forEach(button=>button.addEventListener('click',()=>activate(button.dataset.tab)));
+$('ownerFilter').addEventListener('change',render);
+$('gantt').addEventListener('click',event=>{
+ const button=event.target.closest('[data-task]');if(!button)return;
+ const task=tasks.find(t=>t.id===button.dataset.task);
+ $('dialogBody').innerHTML='<span class="tag '+task.o+'">'+names[task.o]+'</span><h2 style="margin-top:18px">'+task.n+'</h2><p class="due-heading">截止 '+task.e.replace('-','/')+'</p><p>'+task.a+'</p>';
+ $('taskDialog').showModal();
+});
 $('closeDialog').addEventListener('click',()=>$('taskDialog').close());
-for(const o of ['design','tech','growth']){$('name-'+o).value=state.names[o];$('name-'+o).addEventListener('change',e=>{state.names[o]=e.target.value.trim()||defaults.names[o];e.target.value=state.names[o];persist();render();});}
-document.querySelectorAll('[data-check]').forEach(c=>{c.checked=!!state.checks[c.dataset.check];c.addEventListener('change',()=>{state.checks[c.dataset.check]=c.checked;persist();});});
-$('meetingNotes').value=state.notes;$('meetingNotes').addEventListener('input',e=>{state.notes=e.target.value;persist();});
-let printDetails=false;window.addEventListener('beforeprint',()=>{printDetails=$('acceptance').open;$('acceptance').open=true;});window.addEventListener('afterprint',()=>{$('acceptance').open=printDetails;});let printFilters=null;window.addEventListener('beforeprint',()=>{printFilters=[$('ownerFilter').value,$('criticalOnly').checked];$('ownerFilter').value='all';$('criticalOnly').checked=false;render();});window.addEventListener('afterprint',()=>{if(printFilters){$('ownerFilter').value=printFilters[0];$('criticalOnly').checked=printFilters[1];render();printFilters=null;}});
 $('printBtn').addEventListener('click',()=>window.print());
-$('saveBtn').addEventListener('click',()=>{const copy=document.documentElement.cloneNode(true),snapshot={...state,snapshotId:Date.now().toString(36)};copy.querySelector('#embeddedState').textContent=JSON.stringify(snapshot).replace(/</g,'\\u003c');copy.querySelector('#notice').textContent='';copy.querySelector('#taskDialog').removeAttribute('open');copy.querySelectorAll('section[role=tabpanel]').forEach(s=>s.hidden=s.id!=='schedule');copy.querySelectorAll('.tab').forEach(b=>b.setAttribute('aria-selected',String(b.dataset.tab==='schedule')));const blob=new Blob(['<!doctype html>\n'+copy.outerHTML],{type:'text/html;charset=utf-8'}),url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download='同好制所-推进排期-'+new Date().toISOString().slice(0,10)+'.html';a.click();setTimeout(()=>URL.revokeObjectURL(url),1000);$('notice').textContent='已生成含当前名字、状态与备注的副本，可把下载的 HTML 发给队友。';});
-$('taskDialog').addEventListener('click',event=>{if(event.target!==$('taskDialog'))return;const box=$('taskDialog').getBoundingClientRect();if(event.clientX<box.left||event.clientX>box.right||event.clientY<box.top||event.clientY>box.bottom)$('taskDialog').close();});
+$('saveBtn').addEventListener('click',()=>{
+ const html='<!doctype html>'+document.documentElement.outerHTML;
+ const url=URL.createObjectURL(new Blob([html],{type:'text/html;charset=utf-8'}));
+ const anchor=document.createElement('a');anchor.href=url;anchor.download='同好制所-项目排期.html';anchor.click();
+ setTimeout(()=>URL.revokeObjectURL(url),1000);
+});
 render();
 </script></body></html>
